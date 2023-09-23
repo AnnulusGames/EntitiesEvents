@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using EntitiesEvents.LowLevel.Unsafe;
 using EntitiesEvents.Internal;
+using Unity.Burst;
 
 namespace EntitiesEvents
 {
@@ -17,7 +18,7 @@ namespace EntitiesEvents
 
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
             m_Safety = AtomicSafetyHandle.Create();
-            AtomicSafetyHandle.SetStaticSafetyId(ref m_Safety, s_staticSafetyId); 
+            CollectionHelper.SetStaticSafetyId<Events<T>>(ref m_Safety, ref s_staticSafetyId.Data); 
             if (UnsafeUtility.IsNativeContainerType<T>()) AtomicSafetyHandle.SetNestedContainer(m_Safety, true);
 #endif
         }
@@ -28,7 +29,7 @@ namespace EntitiesEvents
 
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
         internal AtomicSafetyHandle m_Safety;
-        internal static readonly int s_staticSafetyId = AtomicSafetyHandle.NewStaticSafetyId<Events<T>>();
+        internal static readonly SharedStatic<int> s_staticSafetyId = SharedStatic<int>.GetOrCreate<Events<T>>();
 #endif
 
         public bool IsCreated

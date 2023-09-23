@@ -15,7 +15,6 @@ namespace EntitiesEvents.LowLevel.Unsafe
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
             if (allocator <= Allocator.None) throw new ArgumentException("Allocator must be Temp, TempJob, Persistent or registered custom allcoator", "allocator");
             if (initialCapacity < 0) throw new ArgumentOutOfRangeException("initialCapacity", "InitialCapacity must be >= 0");
-            if (!UnsafeUtility.IsBlittable<T>()) throw new ArgumentException(string.Format("{0} used in UnsafeEvents<{0}> must be blittable", typeof(T)));
 #endif
 
             var size = UnsafeUtility.SizeOf<EventsData<T>>();
