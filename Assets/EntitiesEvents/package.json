@@ -1,0 +1,11 @@
+{
+  "name": "com.annulusgames.entities-events",
+  "version": "1.0.0",
+  "displayName": "Entities Events",
+  "description": "Provides inter-system messaging functionality for Unity ECS",
+  "unity": "2022.1",
+  "author": {
+    "name": "Annulus Games",
+    "url": "https://github.com/AnnulusGames"
+  }
+}
