@@ -30,15 +30,6 @@ namespace EntitiesEvents
 #endif
             buffer->Write(value);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SendDefault()
-        {
-#if ENABLE_UNITY_COLLECTIONS_CHECKS
-            AtomicSafetyHandle.CheckWriteAndThrow(m_Safety);
-#endif
-            buffer->Write(default);
-        }
     }
 }
 
@@ -58,12 +49,6 @@ namespace EntitiesEvents.LowLevel.Unsafe
         public void Send(in T value)
         {
             buffer->Write(value);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SendDefault()
-        {
-            buffer->Write(default);
         }
     }
 }
