@@ -24,6 +24,7 @@ namespace EntitiesEvents.Internal
         internal UnsafeList<EventInstance<T>> buffer1;
         internal UnsafeList<EventInstance<T>> buffer2;
         internal uint eventCounter;
+        internal uint prevEventCounter;
         bool state;
 
         internal UnsafeList<EventInstance<T>> GetWriteBuffer() => state ? buffer2 : buffer1;
@@ -34,6 +35,7 @@ namespace EntitiesEvents.Internal
             buffer1 = new UnsafeList<EventInstance<T>>(capacity, allocator);
             buffer2 = new UnsafeList<EventInstance<T>>(capacity, allocator);
             eventCounter = 0;
+            prevEventCounter = 0;
             state = false;
         }
 
@@ -42,6 +44,8 @@ namespace EntitiesEvents.Internal
             state = !state;
             if (state) buffer2.Clear();
             else buffer1.Clear();
+
+            prevEventCounter = eventCounter;
         }
 
         public void Write(in T value)
