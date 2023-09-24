@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Entities;
 
 namespace EntitiesEvents.Internal
@@ -7,8 +8,19 @@ namespace EntitiesEvents.Internal
         public static EventWriter<T> GetWriter<T>(ref SystemState state)
             where T : unmanaged
         {
-            var handle = state.WorldUnmanaged.GetExistingSystemState<EventSystem<T>>().SystemHandle;
-            return state.EntityManager.GetComponentData<EventSingleton<T>>(handle).events.GetWriter();
+            var query = state.GetEntityQuery(ComponentType.ReadWrite<EventSingleton<T>>());
+            if (query.TryGetSingleton<EventSingleton<T>>(out var value))
+            {
+                return value.events.GetWriter();
+            }
+            else
+            {
+                var events = new Events<T>(256, Allocator.Persistent);
+                var singleton = new EventSingleton<T> { events = events };
+                state.EntityManager.CreateSingleton(singleton);
+
+                return events.GetWriter();
+            }
         }
 
         public static EventWriter<T> GetWriter<T>(SystemBase systemBase)
@@ -20,8 +32,19 @@ namespace EntitiesEvents.Internal
         public static EventReader<T> GetReader<T>(ref SystemState state)
             where T : unmanaged
         {
-            var handle = state.WorldUnmanaged.GetExistingSystemState<EventSystem<T>>().SystemHandle;
-            return state.EntityManager.GetComponentData<EventSingleton<T>>(handle).events.GetReader();
+            var query = state.GetEntityQuery(ComponentType.ReadWrite<EventSingleton<T>>());
+            if (query.TryGetSingleton<EventSingleton<T>>(out var value))
+            {
+                return value.events.GetReader();
+            }
+            else
+            {
+                var events = new Events<T>(256, Allocator.Persistent);
+                var singleton = new EventSingleton<T> { events = events };
+                state.EntityManager.CreateSingleton(singleton);
+
+                return events.GetReader();
+            }
         }
 
         public static EventReader<T> GetReader<T>(SystemBase systemBase)
