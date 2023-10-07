@@ -17,9 +17,10 @@ namespace EntitiesEvents
             container = new UnsafeEvents<T>(initialCapacity, allocator);
 
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
-            m_Safety = AtomicSafetyHandle.Create();
+            m_Safety = CollectionHelper.CreateSafetyHandle(allocator);
             CollectionHelper.SetStaticSafetyId<Events<T>>(ref m_Safety, ref s_staticSafetyId.Data); 
             if (UnsafeUtility.IsNativeContainerType<T>()) AtomicSafetyHandle.SetNestedContainer(m_Safety, true);
+            AtomicSafetyHandle.SetBumpSecondaryVersionOnScheduleWrite(m_Safety, true);
 #endif
         }
 
@@ -54,7 +55,7 @@ namespace EntitiesEvents
         public EventWriter<T> GetWriter()
         {
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
-            AtomicSafetyHandle.CheckWriteAndThrow(m_Safety);
+            AtomicSafetyHandle.CheckExistsAndThrow(m_Safety);
 #endif
             return new EventWriter<T>(this);
         }
@@ -63,7 +64,7 @@ namespace EntitiesEvents
         public EventReader<T> GetReader()
         {
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
-            AtomicSafetyHandle.CheckReadAndThrow(m_Safety);
+            AtomicSafetyHandle.CheckExistsAndThrow(m_Safety);
 #endif
             return new EventReader<T>(this);
         }

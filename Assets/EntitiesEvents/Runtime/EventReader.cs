@@ -4,6 +4,8 @@ using EntitiesEvents.Internal;
 
 namespace EntitiesEvents
 {
+    [NativeContainer]
+    [NativeContainerIsReadOnly]
     public unsafe struct EventReader<T>
         where T : unmanaged
     {
@@ -13,7 +15,10 @@ namespace EntitiesEvents
             eventCounter = buffer->prevEventCounter;
 
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
-            m_Safety = events.m_Safety;
+            AtomicSafetyHandle.CheckGetSecondaryDataPointerAndThrow(events.m_Safety);
+            var ash = events.m_Safety;
+            AtomicSafetyHandle.UseSecondaryVersion(ref ash);
+            m_Safety = ash;
 #endif
         }
 

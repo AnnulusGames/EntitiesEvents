@@ -4,6 +4,8 @@ using EntitiesEvents.Internal;
 
 namespace EntitiesEvents
 {
+    [NativeContainer]
+    [NativeContainerIsAtomicWriteOnly]
     public unsafe struct EventWriter<T>
         where T : unmanaged
     {
@@ -12,7 +14,10 @@ namespace EntitiesEvents
             buffer = events.GetBuffer();
 
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
-            m_Safety = events.m_Safety;
+            AtomicSafetyHandle.CheckGetSecondaryDataPointerAndThrow(events.m_Safety);
+            var ash = events.m_Safety;
+            AtomicSafetyHandle.UseSecondaryVersion(ref ash);
+            m_Safety = ash;
 #endif
         }
 
@@ -23,7 +28,7 @@ namespace EntitiesEvents
 #endif
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Send(in T value)
+        public void Write(in T value)
         {
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
             AtomicSafetyHandle.CheckWriteAndThrow(m_Safety);
@@ -46,7 +51,7 @@ namespace EntitiesEvents.LowLevel.Unsafe
         [NativeDisableUnsafePtrRestriction] EventsData<T>* buffer;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Send(in T value)
+        public void Write(in T value)
         {
             buffer->Write(value);
         }
