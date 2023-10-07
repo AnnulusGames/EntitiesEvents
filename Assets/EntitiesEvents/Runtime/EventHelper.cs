@@ -1,7 +1,8 @@
 using Unity.Collections;
 using Unity.Entities;
+using EntitiesEvents.Internal;
 
-namespace EntitiesEvents.Internal
+namespace EntitiesEvents
 {
     public static class EventHelper
     {
@@ -15,7 +16,7 @@ namespace EntitiesEvents.Internal
             }
             else
             {
-                var events = new Events<T>(256, Allocator.Persistent);
+                var events = new Events<T>(512, Allocator.Persistent);
                 var singleton = new EventSingleton<T> { events = events };
                 state.EntityManager.CreateSingleton(singleton);
 
@@ -39,7 +40,7 @@ namespace EntitiesEvents.Internal
             }
             else
             {
-                var events = new Events<T>(256, Allocator.Persistent);
+                var events = new Events<T>(512, Allocator.Persistent);
                 var singleton = new EventSingleton<T> { events = events };
                 state.EntityManager.CreateSingleton(singleton);
 

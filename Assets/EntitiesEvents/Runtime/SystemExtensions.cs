@@ -1,5 +1,4 @@
 using Unity.Entities;
-using EntitiesEvents.Internal;
 
 namespace EntitiesEvents
 {
