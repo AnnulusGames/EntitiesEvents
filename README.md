@@ -117,7 +117,7 @@ public partial struct ReadEventSystem : ISystem
 }
 ```
 
-If your System inherits from a class that extends SystemBase, you can obtain EventWriter/EventReader using `EventHelper.GetEventWriter<MyEvent>(SystemBase)` or `EventHelper.GetEventWriter<MyEvent>(SystemBase)`.
+If your System inherits from a class that extends SystemBase, you can obtain EventWriter/EventReader using `this.GetEventWriter<MyEvent>()` or `this.GetEventWriter<MyEvent>()`.
 
 ```cs
 using Unity.Burst;
@@ -132,8 +132,8 @@ public partial class WriteEventSystemClass : SystemBase
     [BurstCompile]
     protected override OnCreate()
     {
-        // Obtain the EventWriter with EventHelper.GetEventWriter
-        eventWriter = EventHelper.GetEventWriter<MyEvent>(this);
+        // Obtain the EventWriter with this.GetEventWriter
+        eventWriter = this.GetEventWriter<MyEvent>();
     }
 
     [BurstCompile]

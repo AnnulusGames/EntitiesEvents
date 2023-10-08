@@ -118,7 +118,7 @@ public partial struct ReadEventSystem : ISystem
 }
 ```
 
-SystemがSystemBaseを継承したclassの場合は`EventHelper.GetEventWriter<MyEvent>(SystemBase)`または`EventHelper.GetEventWriter<MyEvent>(SystemBase)`でEventWriter/EventReaderの取得を行うことができます。
+SystemがSystemBaseを継承したclassの場合は`this.GetEventWriter<MyEvent>()`または`this.GetEventWriter<MyEvent>()`でEventWriter/EventReaderの取得を行うことができます。
 
 ```cs
 using Unity.Burst;
@@ -133,8 +133,8 @@ public partial class WriteEventSystemClass : SystemBase
     [BurstCompile]
     protected override OnCreate()
     {
-        // EventHelper.GetEventWriterでEventWriterを取得
-        eventWriter = EventHelper.GetEventWriter<MyEvent>(this);
+        // this.GetEventWriterでEventWriterを取得
+        eventWriter = this.GetEventWriter<MyEvent>();
     }
 
     [BurstCompile]
