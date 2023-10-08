@@ -6,28 +6,28 @@ namespace EntitiesEvents
 {
     public static class EventHelper
     {
-        public static EventWriter<T> GetWriter<T>(ref SystemState state)
+        public static EventWriter<T> GetEventWriter<T>(this ref SystemState state)
             where T : unmanaged
         {
             return GetOrCreateSingleton<T>(ref state).events.GetWriter();
         }
 
-        public static EventWriter<T> GetWriter<T>(SystemBase systemBase)
+        public static EventWriter<T> GetEventWriter<T>(SystemBase systemBase)
             where T : unmanaged
         {
-            return GetWriter<T>(ref systemBase.CheckedStateRef);
+            return GetEventWriter<T>(ref systemBase.CheckedStateRef);
         }
 
-        public static EventReader<T> GetReader<T>(ref SystemState state)
+        public static EventReader<T> GetEventReader<T>(this ref SystemState state)
             where T : unmanaged
         {
             return GetOrCreateSingleton<T>(ref state).events.GetReader();
         }
 
-        public static EventReader<T> GetReader<T>(SystemBase systemBase)
+        public static EventReader<T> GetEventReader<T>(SystemBase systemBase)
             where T : unmanaged
         {
-            return GetReader<T>(ref systemBase.CheckedStateRef);
+            return GetEventReader<T>(ref systemBase.CheckedStateRef);
         }
 
         public unsafe static void EnsureBufferCapacity<T>(ref SystemState state, int capacity)
