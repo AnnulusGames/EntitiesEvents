@@ -12,7 +12,7 @@ namespace EntitiesEvents
             return GetOrCreateSingleton<T>(ref state).events.GetWriter();
         }
 
-        public static EventWriter<T> GetEventWriter<T>(SystemBase systemBase)
+        public static EventWriter<T> GetEventWriter<T>(this SystemBase systemBase)
             where T : unmanaged
         {
             return GetEventWriter<T>(ref systemBase.CheckedStateRef);
@@ -24,7 +24,7 @@ namespace EntitiesEvents
             return GetOrCreateSingleton<T>(ref state).events.GetReader();
         }
 
-        public static EventReader<T> GetEventReader<T>(SystemBase systemBase)
+        public static EventReader<T> GetEventReader<T>(this SystemBase systemBase)
             where T : unmanaged
         {
             return GetEventReader<T>(ref systemBase.CheckedStateRef);
