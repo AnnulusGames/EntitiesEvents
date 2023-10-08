@@ -60,6 +60,15 @@ namespace EntitiesEvents.Internal
             buffer1.Dispose();
             buffer2.Dispose();
         }
+
+        public void EnsureCapacity(int capacity)
+        {
+            while (buffer1.Length < capacity && buffer2.Length < capacity)
+            {
+                buffer1.Resize(buffer1.Length * 2);
+                buffer2.Resize(buffer2.Length * 2);
+            }
+        }
     }
 
     public readonly unsafe ref struct EventsDataIterator<T> where T : unmanaged
