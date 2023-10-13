@@ -16,7 +16,7 @@ Entities Events is a library that adds event functionality to Unity's Entity Com
 
 ### Requirements
 
-* Unity 2022.1 or higher
+* Unity 2022.3 or higher
 * Entities 1.0.0 or higher
 
 ### Installation
