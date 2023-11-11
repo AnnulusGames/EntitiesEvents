@@ -50,6 +50,13 @@ namespace EntitiesEvents.Internal
 
         public void Write(in T value)
         {
+            if (state) buffer2.Add(new EventInstance<T>(value, eventCounter));
+            else buffer1.Add(new EventInstance<T>(value, eventCounter));
+            eventCounter++;
+        }
+
+        public void WriteNoResize(in T value)
+        {
             if (state) buffer2.AsParallelWriter().AddNoResize(new EventInstance<T>(value, eventCounter));
             else buffer1.AsParallelWriter().AddNoResize(new EventInstance<T>(value, eventCounter));
             eventCounter++;

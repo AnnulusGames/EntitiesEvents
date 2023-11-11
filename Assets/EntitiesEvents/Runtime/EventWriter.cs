@@ -35,6 +35,15 @@ namespace EntitiesEvents
 #endif
             buffer->Write(value);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void WriteNoResize(in T value)
+        {
+#if ENABLE_UNITY_COLLECTIONS_CHECKS
+            AtomicSafetyHandle.CheckWriteAndThrow(m_Safety);
+#endif
+            buffer->WriteNoResize(value);
+        }
     }
 }
 
@@ -54,6 +63,12 @@ namespace EntitiesEvents.LowLevel.Unsafe
         public void Write(in T value)
         {
             buffer->Write(value);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void WriteNoResize(in T value)
+        {
+            buffer->WriteNoResize(value);
         }
     }
 }
